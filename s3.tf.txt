@@ -1,0 +1,18 @@
+provider "aws" {
+  region = "us-east-1"
+}
+
+# Generate a random suffix for the bucket name
+resource "random_id" "bucket_suffix" {
+  byte_length = 8
+}
+
+resource "aws_s3_bucket" "example" {
+  bucket = "my-tf-test-bucket-${random_id.bucket_suffix.hex}"  # Unique bucket name
+  acl    = "private"
+
+  tags = {
+    Name        = "My bucket"
+    Environment = "Dev"
+  }
+}

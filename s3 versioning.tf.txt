@@ -1,0 +1,21 @@
+provider "aws" {
+  region = "us-east-1"
+}
+
+# Fetch the current account identity
+data "aws_caller_identity" "current" {}
+
+resource "aws_s3_bucket" "my_bucket" {
+  bucket = "devops2211-${data.aws_caller_identity.current.account_id}-us-east-1"  # Unique name based on account ID and region
+  versioning {
+    enabled = true
+  }
+
+  acl = "private"
+
+  tags = {
+    Name       = "My bucket"
+    Environment = "Dev"
+  }
+}
+
